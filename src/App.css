@@ -69,3 +69,16 @@
   font-size: 13px;
   font-weight: 600;
 }
+
+
+.task-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 800px) {
+  .task-board {
+    grid-template-columns: 1fr;
+  }
+}
