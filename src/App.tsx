@@ -1,13 +1,32 @@
 import { initialTasks } from './data/initialTasks'
 import TaskCard from './components/TaskCard'
 import TaskForm from './components/TaskForm'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Task } from './types/task'
 import './App.css'
 
+
+const TASKS_STORAGE_KEY = 'sprint-pilot-tasks'
 function App() {
 
-  const [tasks, setTasks] = useState(initialTasks)
+
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    const storedTasks = localStorage.getItem(TASKS_STORAGE_KEY)
+
+    if (!storedTasks) {
+      return initialTasks
+    }
+
+    try {
+      return JSON.parse(storedTasks) as Task[]
+    } catch {
+      return initialTasks
+    }
+  })
+
+  useEffect(() => {
+    localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks))
+  }, [tasks])
 
   const backlogTasks = tasks.filter(
     (task) => task.status === 'backlog',
