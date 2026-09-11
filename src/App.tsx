@@ -53,6 +53,21 @@ function App() {
     }
     setTasks((prevTasks) => [...prevTasks, newTask])
   }
+
+  function handleMoveForward(taskId: string) {
+    setTasks((currentTasks) =>
+      currentTasks.map((task) => {
+        if (task.id !== taskId) {
+          return task
+        }
+
+        const nextStatus =
+          task.status === 'backlog' ? 'in-progress' : 'done'
+
+        return { ...task, status: nextStatus }
+      }),
+    )
+  }
   return (
     <main className="app-shell">
       <header className="app-header">
@@ -69,19 +84,31 @@ function App() {
           <h2>Backlog</h2>
 
           {backlogTasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
+            <TaskCard
+              key={task.id}
+              task={task}
+              onMoveForward={handleMoveForward}
+            />
           ))}
         </section>
         <section className="task-section">
           <h2>In Progress</h2>
           {inProgressTasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
+            <TaskCard
+              key={task.id}
+              task={task}
+              onMoveForward={handleMoveForward}
+            />
           ))}
         </section>
         <section className="task-section">
           <h2>Done</h2>
           {doneTasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
+            <TaskCard
+              key={task.id}
+              task={task}
+              onMoveForward={handleMoveForward}
+            />
           ))}
         </section>
       </div>
